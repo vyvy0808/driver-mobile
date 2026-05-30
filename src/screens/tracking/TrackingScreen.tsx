@@ -18,17 +18,13 @@ import MapView, {
   Marker,
 } from "react-native-maps";
 
-import { Trip }
-from "../../types/trip";
+import { Trip } from "../../types/trip";
 
-import { tripService }
-from "../../services/tripService";
+import { tripService } from "../../services/tripService";
 
-import { useTracking }
-from "../../hooks/useTracking";
+import { useTracking } from "../../hooks/useTracking";
 
-import { useGpsSocket }
-from "../../hooks/useGpsSocket";
+import { useGpsSocket } from "../../hooks/useGpsSocket";
 
 export default function TrackingScreen() {
 
@@ -73,7 +69,7 @@ export default function TrackingScreen() {
         );
 
         const data =
-          await tripService.getCurrentTrip(
+          await tripService.getCurrentTripByDriver(
             driverId
           );
 

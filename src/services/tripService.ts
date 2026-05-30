@@ -1,18 +1,21 @@
 import api from "../api/axios";
-import { Trip }
-  from "../types/trip";
+import { Trip } from "../types/trip";
 
 export const tripService = {
-  getCurrentTrip:
-    async (
-      driverId: number
-    ): Promise<Trip> => {
+  getCurrentTripByDriver: async (driverId: number): Promise<Trip | null> => {
+    const response = await api.get<Trip | null>(
+      `/trips/driver/${driverId}/current`
+    );
 
-      const res =
-        await api.get(
-          `/api/trips/driver/${driverId}/current`
-        );
+    return response.data;
+  },
 
-      return res.data;
-    },
+  getTripsByDriver: async (driverId: number): Promise<Trip[]> => {
+    const response = await api.get<Trip[]>(`/trips/driver/${driverId}`);
+    return response.data;
+  },
+
+  completeTrip: async (tripId: number): Promise<void> => {
+    await api.patch(`/trips/${tripId}/complete`);
+  },
 };
