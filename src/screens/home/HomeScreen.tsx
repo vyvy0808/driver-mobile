@@ -1,14 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
-    ActivityIndicator,
-    Alert,
-    Pressable,
-    RefreshControl,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    View,
+  ActivityIndicator,
+  Alert,
+  Pressable,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
 } from "react-native";
 import { useAuth } from "../../context/AuthContext";
 import { incidentService } from "../../services/incidentService";
@@ -108,24 +108,38 @@ export default function HomeScreen() {
     }
   };
 
-  const handleViewSalary = () => {
-    const totalOrderAmount = (currentTrip as any)?.totalOrderAmount;
+  const handleViewSalary = async () => {
+  if (!currentTrip) {
+    return;
+  }
 
-    if (!totalOrderAmount) {
-      Alert.alert(
-        "Lương chuyến",
-        "BE cần trả thêm totalOrderAmount trong TripResponse hoặc tạo API riêng để tính lương chuyến."
+  try {
+    const salary =
+      await tripService.getTripSalary(
+        currentTrip.id
       );
-      return;
-    }
-
-    const salary = totalOrderAmount * 0.1;
 
     Alert.alert(
       "Lương chuyến",
-      `Tổng giá trị đơn hàng: ${totalOrderAmount.toLocaleString("vi-VN")}đ\nLương chuyến: ${salary.toLocaleString("vi-VN")}đ`
+      `Mã chuyến: ${salary.tripCode}
+
+Tổng giá trị đơn hàng:
+${Number(
+  salary.totalOrderAmount
+).toLocaleString("vi-VN")}đ
+
+Lương tài xế (10%):
+${Number(
+  salary.salaryAmount
+).toLocaleString("vi-VN")}đ`
     );
-  };
+  } catch (error) {
+    Alert.alert(
+      "Lỗi",
+      "Không thể tải thông tin lương chuyến."
+    );
+  }
+};
 
   const handleCompleteTrip = () => {
     if (!currentTrip) return;
