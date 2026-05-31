@@ -1,7 +1,7 @@
 export const CONFIG = {
   BASE_URL:
-    "http://172.20.10.2:8080",
+    "http://192.168.1.82:8080/api",
 
   WS_URL:
-    "http://172.20.10.2:8080/ws",
+    "http://192.168.1.82:8080/ws",
 };
