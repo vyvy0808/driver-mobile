@@ -25,12 +25,17 @@ import { tripService } from "../../services/tripService";
 import { useTracking } from "../../hooks/useTracking";
 
 import { useGpsSocket } from "../../hooks/useGpsSocket";
+import { useAuth } from "../../context/AuthContext";
 
 export default function TrackingScreen() {
 
   // TODO:
   // login chưa làm
-  const driverId = 2;
+  const { user } =
+    useAuth();
+
+  const driverId =
+    user?.driverId;
 
   const [
     trip,
@@ -55,14 +60,19 @@ export default function TrackingScreen() {
 
   useEffect(() => {
 
-    loadCurrentTrip();
+    if (driverId) {
+      loadCurrentTrip();
+    }
 
-  }, []);
+  }, [driverId]);
 
   const loadCurrentTrip =
     async () => {
-
       try {
+
+        if (!driverId) {
+          return;
+        }
 
         setLoading(
           true
@@ -73,6 +83,16 @@ export default function TrackingScreen() {
             driverId
           );
 
+        console.log(
+          "Driver:",
+          driverId
+        );
+
+        console.log(
+          "Trip:",
+          data
+        );
+
         setTrip(data);
 
       } catch (
@@ -80,6 +100,7 @@ export default function TrackingScreen() {
       ) {
 
         console.log(
+          "Load trip error:",
           error
         );
 
@@ -90,7 +111,6 @@ export default function TrackingScreen() {
         );
       }
     };
-
   // ====================
   // TRACKING
   // ====================

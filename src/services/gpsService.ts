@@ -9,7 +9,7 @@ export const gpsService = {
 
     const res =
       await api.post(
-        "/api/gps/push",
+        "/gps/push",
         {
           tripId,
           lat,
